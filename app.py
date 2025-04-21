@@ -12,7 +12,11 @@ def signup():
     conn = get_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (data['username'], data['password']))
+        cursor.execute(
+    "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
+    (data['username'], data['email'], data['password'])
+)
+
         conn.commit()
         return jsonify({'status': 'success'})
     except:
