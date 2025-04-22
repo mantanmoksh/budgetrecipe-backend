@@ -227,18 +227,6 @@ def recipes():
         "Tomato Pasta": "https://i.pinimg.com/736x/fe/20/34/fe20347922579377257c25da1bfb515e.jpg",
         "Paneer Wrap": "https://i.pinimg.com/736x/44/3e/3e/443e3eb28ee9315ab961787df489e30d.jpg"
      }
-    # Query for recipes based on the budget
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id, name, price FROM recipes WHERE price <= %s", (budget,))
-    data = cursor.fetchall()
-    conn.close()
-    for item in data:
-        name = item["name"]
-        url = images.get(name,"")
-        item["image"] = url
-
-    # Predefined descriptions, image URLs, and specific recipe pages for some recipe names
     descriptions = {
         "Besan Chilla": "A healthy and tasty South Indian breakfast dish made with semolina.",
         "Aloo Paratha": "A delicious stuffed Indian flatbread filled with spiced mashed potatoes.",
@@ -603,6 +591,19 @@ def recipes():
     "Tomato Pasta": "/tomatopasta.html",
     "Paneer Wrap": "/pannerwrap.html"
 }
+    # Query for recipes based on the budget
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT id, name, price FROM recipes WHERE price <= %s", (budget,))
+    data = cursor.fetchall()
+    conn.close()
+    for item in data:
+        name = item["name"]
+        url = images.get(name,"")
+        item["image"] = url
+    return jsonify(data)
+    # Predefined descriptions, image URLs, and specific recipe pages for some recipe names
+    
 def enrich_recipes(data, descriptions, images, recipe_pages):
     for recipe in data:
         recipe_name = recipe['name'].lower()
