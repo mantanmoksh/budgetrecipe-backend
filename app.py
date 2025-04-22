@@ -41,7 +41,7 @@ def recipes():
     # Query for recipes based on the budget
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id, name, price FROM recipes WHERE price <= %s", (budget,))
+    cursor.execute("SELECT * FROM recipes WHERE price <= %s", (budget,))
     data = cursor.fetchall()
     conn.close()
 
