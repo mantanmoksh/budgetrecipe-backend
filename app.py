@@ -234,7 +234,7 @@ def recipes():
     data = cursor.fetchall()
     conn.close()
     for item in data:
-        name = item.name
+        name = item["name"]
         url = images.get(name,"")
         item.image = url
 
