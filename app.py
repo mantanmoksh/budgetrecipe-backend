@@ -236,7 +236,7 @@ def recipes():
     for item in data:
         name = item["name"]
         url = images.get(name,"")
-        item.image = url
+        item["image"] = url
 
     # Predefined descriptions, image URLs, and specific recipe pages for some recipe names
     descriptions = {
