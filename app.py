@@ -227,6 +227,10 @@ def recipes():
         "Tomato Pasta": "https://i.pinimg.com/736x/fe/20/34/fe20347922579377257c25da1bfb515e.jpg",
         "Paneer Wrap": "https://i.pinimg.com/736x/44/3e/3e/443e3eb28ee9315ab961787df489e30d.jpg"
      }
+    newimages = dict()
+    for image in images:
+         newimages[image.lower()] = images[image]
+    
     descriptions = {
         "Besan Chilla": "A healthy and tasty South Indian breakfast dish made with semolina.",
         "Aloo Paratha": "A delicious stuffed Indian flatbread filled with spiced mashed potatoes.",
@@ -598,8 +602,8 @@ def recipes():
     data = cursor.fetchall()
     conn.close()
     for item in data:
-        name = item["name"]
-        url = images.get(name,"")
+        name = item["name"].lower()
+        url = newimages.get(name,"")
         item["image"] = url
     return jsonify(data)
     # Predefined descriptions, image URLs, and specific recipe pages for some recipe names
