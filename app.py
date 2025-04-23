@@ -228,7 +228,7 @@ def recipes():
         "Paneer Wrap": "https://i.pinimg.com/736x/44/3e/3e/443e3eb28ee9315ab961787df489e30d.jpg"
      }
     newimages = dict()
-    for image in images:
+    for image in images.keys():
          newimages[image.lower()] = images[image]
     
     descriptions = {
@@ -420,7 +420,9 @@ def recipes():
         "Tomato Pasta": "Simple pasta in tangy tomato sauce.",
         "Paneer Wrap": "Paneer tossed in spices and wrapped in roti."
     }
-
+    newdescriptions = dict()
+    for desc in descriptions.keys():
+         newdescriptions[desc.lower()] = descriptions.get(desc,"")
     
     recipe_pages = {
     "Besan Chilla": "/besanchilla.html",
@@ -595,6 +597,9 @@ def recipes():
     "Tomato Pasta": "/tomatopasta.html",
     "Paneer Wrap": "/pannerwrap.html"
 }
+    new_recipe_pages = dict()
+    for page in recipe_pages.keys():
+         new_recipe_pages[page.lower()] = recipe_pages.get(page,"")
     # Query for recipes based on the budget
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -605,6 +610,12 @@ def recipes():
         name = item["name"].lower()
         url = newimages.get(name,"")
         item["image"] = url
+        page = new_recipe_pages.get(name,"")
+        if(len(page)>0):
+            page = page[1:]
+        item["link"] = page
+        desc = newdescriptions.get(name,"")
+        item["description"] = desc     
     return jsonify(data)
     # Predefined descriptions, image URLs, and specific recipe pages for some recipe names
     
