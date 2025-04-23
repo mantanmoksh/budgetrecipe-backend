@@ -652,37 +652,5 @@ def enrich_recipes(data, descriptions, images, recipe_pages):
 
     return jsonify(data)
 
-
-@app.route('/favourite', methods=['POST'])
-def add_favourite():
-    data = request.json
-    user_id = data['user_id']
-    recipe_id = data['recipe_id']
-    conn = get_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("INSERT INTO favourites (user_id, recipe_id) VALUES (%s, %s)", (user_id, recipe_id))
-        conn.commit()
-        return jsonify({'status': 'success'})
-    except:
-        conn.rollback()
-        return jsonify({'status': 'error'}), 500
-    finally:
-        conn.close()
-
-@app.route('/favourites', methods=['GET'])
-def get_favourites():
-    user_id = request.args.get('user_id')
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("""
-        SELECT r.* FROM recipes r
-        JOIN favourites f ON r.id = f.recipe_id
-        WHERE f.user_id = %s
-    """, (user_id,))
-    data = cursor.fetchall()
-    conn.close()
-    return jsonify(data)
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
